@@ -9,6 +9,8 @@
 #include <assert.h>
 #include <arpa/inet.h>
 
+static int debug = 0;
+
 struct obex_state {
     obex_t *handle;
     int req_done;
@@ -32,8 +34,9 @@ static void obex_requestdone (struct obex_state *state, obex_t *hdl,
 				if (header_id == OBEX_HDR_CONNECTION) {
 					state->got_connid=1;
 					state->connid = hdata.bq4;
-					printf("Connection ID: %d\n",
-					       state->connid);
+					if (debug)
+						printf("Connection ID: %d\n",
+						       state->connid);
 				}
 			}
 			break;
@@ -101,7 +104,8 @@ static void pen_reset (short vendor, short product)
 	libusb_device_handle *dev;
 	int rc;
 
-	printf("swizzle\n");
+	if (debug)
+		printf("swizzle\n");
 	
 	rc = libusb_init(&ctx);
 	assert(rc == 0);
@@ -117,7 +121,8 @@ static int swizzle_usb (short vendor, short product)
 	libusb_device_handle *dev;
 	int rc;
 
-	printf("swizzle\n");
+	if (debug)
+		printf("swizzle\n");
 	
 	rc = libusb_init(&ctx);
 	assert(rc == 0);
