@@ -110,7 +110,11 @@ static void pen_reset (short vendor, short product)
 	rc = libusb_init(&ctx);
 	assert(rc == 0);
 	dev = libusb_open_device_with_vid_pid(ctx, vendor, product);
+	if (!dev)
+		goto out;
 	libusb_reset_device(dev);
+
+out:
 	libusb_close(dev);
 	libusb_exit(ctx);
 }
@@ -130,6 +134,9 @@ static int swizzle_usb (short vendor, short product)
 	if (!dev)
 		goto out;
 
+	libusb_set_auto_detach_kernel_driver(dev, 1);
+	libusb_claim_interface(dev, 0);
+	libusb_set_auto_detach_kernel_driver(dev, 0);
 	libusb_set_configuration(dev, 1);
 	libusb_set_interface_alt_setting(dev, 1, 0);
 	libusb_set_interface_alt_setting(dev, 1, 1);
