@@ -60,6 +60,14 @@ class Smartpen(pysmartpen.Smartpen):
             finally:
                 os.unlink(tmpfile)
 
+    def audio(self):
+        fd, tmpfile = tempfile.mkstemp()
+        self.get_paperreplay(tmpfile, 0)
+        try:
+            yield fd
+        finally:
+            os.unlink(tmpfile)
+
     @staticmethod
     def notebook_to_pdf(fil):
         z = zipfile.ZipFile(fil, "r")
@@ -90,4 +98,9 @@ if __name__ == "__main__":
         print(nb)
         open(nb, "wb").write(os.fdopen(fd, "rb").read())
         pen.notebook_to_pdf(nb)
+
+    for fd in pen.audio():
+        nb = "audio.zip"
+        open(nb, "wb").write(os.fdopen(fd, "rb").read())
+
     pen.disconnect()
