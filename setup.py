@@ -17,5 +17,4 @@ if __name__ == "__main__":
       name = "pysmartpen",
       py_modules=["parsestf"],
       ext_modules=cythonize(extensions),
-      cmdclass = {'build_ext': build_ext}
     )
