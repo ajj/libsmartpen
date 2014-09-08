@@ -145,7 +145,6 @@ if __name__ == "__main__":
         print(nb)
         open(nb, "wb").write(os.fdopen(fd, "rb").read())
         notebook_to_pdf(nb, t0=t0)
-    raise
 
     for fd in pen.audio():
         nb = "audio.zip"
